@@ -17,6 +17,7 @@ public class FileService {
 
     private final FileRepository fileRepository;
 
+    @Transactional
     public void saveFile(String token, FileSending fileSending) throws IOException {
         String userName = UserService.getUserName(token);
         if (fileRepository.findByFilenameAndUserName(fileSending.getFilename(), userName).isPresent()) {

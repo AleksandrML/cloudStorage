@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 @RestController
@@ -34,8 +35,12 @@ public class Controller {
     @GetMapping(path = "/file")
     public ResponseEntity<byte[]> downloadFile(@RequestHeader("auth-token") String token,
                                                  @RequestParam("filename") String filename) {
-        FileEntity fileEntity = fileService.getFile(token, filename).get(); // TODO: check is empty
-
+        Optional<FileEntity> fileEntityOptional = fileService.getFile(token, filename);
+        if (fileEntityOptional.isEmpty()) {
+            return ResponseEntity.notFound()
+                    .build();
+        }
+        FileEntity fileEntity = fileEntityOptional.get();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileEntity.getFilename() + "\"")
                 .contentType(MediaType.valueOf(fileEntity.getContentType()))
