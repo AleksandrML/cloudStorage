@@ -40,4 +40,16 @@ public class FileService {
         return fileRepository.findByFilenameAndUserName(filename, userName);
     }
 
+    @Transactional
+    public Long deleteFile(String token, String filename) {
+        String userName = UserService.getUserName(token);
+        return fileRepository.deleteByUserNameAndFilename(userName, filename);
+    }
+
+    @Transactional
+    public void updateFilename(String token, String filenameOld, String filenameNew) {
+        String userName = UserService.getUserName(token);
+        fileRepository.updateFilename(filenameNew, userName, filenameOld);
+    }
+
 }

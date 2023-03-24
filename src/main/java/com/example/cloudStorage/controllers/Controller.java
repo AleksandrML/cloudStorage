@@ -2,6 +2,7 @@ package com.example.cloudStorage.controllers;
 
 import com.example.cloudStorage.models.FileEntity;
 import com.example.cloudStorage.models.FileSending;
+import com.example.cloudStorage.models.FileNewName;
 import com.example.cloudStorage.services.FileService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -45,6 +46,19 @@ public class Controller {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileEntity.getFilename() + "\"")
                 .contentType(MediaType.valueOf(fileEntity.getContentType()))
                 .body(fileEntity.getData());
+    }
+
+    @DeleteMapping(path = "/file")
+    public Long deleteFile(@RequestHeader("auth-token") String token,
+                             @RequestParam("filename") String filename) {
+        return fileService.deleteFile(token, filename);
+    }
+
+    @PutMapping(path = "/file")
+    public String updateFilename(@RequestHeader("auth-token") String token,
+                           @RequestParam("filename") String filenameOld, @RequestBody FileNewName fileSending) {
+        fileService.updateFilename(token, filenameOld, fileSending.getName());
+        return "done";
     }
 
 
