@@ -1,6 +1,7 @@
 package com.example.cloudStorage.controllers;
 
 import com.example.cloudStorage.models.FileEntity;
+import com.example.cloudStorage.models.FileNewName2;
 import com.example.cloudStorage.models.FileSending;
 import com.example.cloudStorage.models.FileNewName;
 import com.example.cloudStorage.services.FileService;
@@ -60,6 +61,19 @@ public class Controller {
         fileService.updateFilename(token, filenameOld, fileSending.getName());
         return "done";
     }
+
+
+
+
+
+
+
+//    @PutMapping(path = "/file2")
+//    public String updateFilename2(@RequestHeader("auth-token") String token,
+//                                  @ModelAttribute FileNewName2 fileNewName2) {
+//        fileService.updateFilename(token, fileNewName2.getFilename(), fileNewName2.getName());
+//        return "done";
+//    }
 
 
 
