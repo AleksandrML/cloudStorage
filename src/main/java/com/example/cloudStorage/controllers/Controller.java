@@ -1,5 +1,6 @@
 package com.example.cloudStorage.controllers;
 
+import com.example.cloudStorage.exceptions.FilenameError;
 import com.example.cloudStorage.models.*;
 import com.example.cloudStorage.services.FileService;
 import org.springframework.http.HttpHeaders;
@@ -24,12 +25,9 @@ public class Controller {
     }
 
     @PostMapping(path = "/file", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String uploadFile(@RequestHeader("auth-token") String token, @ModelAttribute FileSending fileSending) throws IOException {
+    public ResponseEntity uploadFile(@RequestHeader("auth-token") String token, @ModelAttribute FileSending fileSending) throws IOException {
         fileService.saveFile(token, fileSending);
-        String filename = fileSending.getFilename();
-        System.out.println(filename);
-        System.out.println(fileSending.getFile());
-        return "done";
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/file")
@@ -37,8 +35,7 @@ public class Controller {
                                                  @RequestParam("filename") String filename) {
         Optional<FileEntity> fileEntityOptional = fileService.getFile(token, filename);
         if (fileEntityOptional.isEmpty()) {
-            return ResponseEntity.notFound()
-                    .build();
+            throw new FilenameError("the file %s does not exist".formatted(filename));
         }
         FileEntity fileEntity = fileEntityOptional.get();
         return ResponseEntity.ok()
@@ -48,16 +45,19 @@ public class Controller {
     }
 
     @DeleteMapping(path = "/file")
-    public Long deleteFile(@RequestHeader("auth-token") String token,
+    public ResponseEntity deleteFile(@RequestHeader("auth-token") String token,
                              @RequestParam("filename") String filename) {
-        return fileService.deleteFile(token, filename);
+        if (fileService.deleteFile(token, filename) > 0) {
+            return ResponseEntity.ok().build();
+        }
+        throw new FilenameError("the file %s does not exist".formatted(filename));
     }
 
     @PutMapping(path = "/file")
-    public String updateFilename(@RequestHeader("auth-token") String token,
+    public ResponseEntity updateFilename(@RequestHeader("auth-token") String token,
                            @RequestParam("filename") String filenameOld, @RequestBody FileNewName fileSending) {
         fileService.updateFilename(token, filenameOld, fileSending.getName());
-        return "done";
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/list")
@@ -79,53 +79,53 @@ public class Controller {
 //        return "done";
 //    }
 
-
-
-
-
-
-
-
-
-
-    @PostMapping("/filee")
-    public String uploadFilee(@RequestHeader("auth-token") String token,
-                             MultipartHttpServletRequest mrequest,
-//                             @RequestParam("filename") String filename,
-                             @RequestParam("file") MultipartFile file) {
-        String filename = mrequest.getParameter("filename");
-        System.out.println(filename);
-        System.out.println(token);
-        System.out.println(file);
-        return "done";
-    }
-
-    @PostMapping(path = "/file3")
-    public String uploadFileQuery(@RequestHeader("auth-token") String token,
-                              @RequestParam("file") MultipartFile file,
-                              @RequestParam("filename") String filename) {
-        System.out.println(filename);
-        System.out.println(token);
-        System.out.println(file);
-        return "done";
-    }
-
-    @PostMapping(path = "/file4")
-    public String uploadFileQuery(@RequestParam("file") MultipartFile file,
-                                  @RequestParam("filename") String filename) {
-        System.out.println(filename);
-        System.out.println(file);
-        return "done";
-    }
-
-    @PostMapping(path = "/file2", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String uploadFile2(@RequestHeader("auth-token") String token,
-                              @ModelAttribute FileSending fileSending) {
-        String filename = fileSending.getFilename();
-        System.out.println(filename);
-        System.out.println(token);
-        System.out.println(fileSending.getFile());
-        return "done";
-    }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//    @PostMapping("/filee")
+//    public String uploadFilee(@RequestHeader("auth-token") String token,
+//                             MultipartHttpServletRequest mrequest,
+////                             @RequestParam("filename") String filename,
+//                             @RequestParam("file") MultipartFile file) {
+//        String filename = mrequest.getParameter("filename");
+//        System.out.println(filename);
+//        System.out.println(token);
+//        System.out.println(file);
+//        return "done";
+//    }
+//
+//    @PostMapping(path = "/file3")
+//    public String uploadFileQuery(@RequestHeader("auth-token") String token,
+//                              @RequestParam("file") MultipartFile file,
+//                              @RequestParam("filename") String filename) {
+//        System.out.println(filename);
+//        System.out.println(token);
+//        System.out.println(file);
+//        return "done";
+//    }
+//
+//    @PostMapping(path = "/file4")
+//    public String uploadFileQuery(@RequestParam("file") MultipartFile file,
+//                                  @RequestParam("filename") String filename) {
+//        System.out.println(filename);
+//        System.out.println(file);
+//        return "done";
+//    }
+//
+//    @PostMapping(path = "/file2", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
+//    public String uploadFile2(@RequestHeader("auth-token") String token,
+//                              @ModelAttribute FileSending fileSending) {
+//        String filename = fileSending.getFilename();
+//        System.out.println(filename);
+//        System.out.println(token);
+//        System.out.println(fileSending.getFile());
+//        return "done";
+//    }
 
 }

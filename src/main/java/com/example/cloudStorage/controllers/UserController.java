@@ -23,10 +23,9 @@ public class UserController {
     }
 
     @PostMapping(path = "/logout")
-    public String uploadFileQuery(@RequestHeader("auth-token") String token) {
+    public ResponseEntity uploadFileQuery(@RequestHeader("auth-token") String token) {
         blackListedTokensRepository.addBlacklistedHeaderToken(token);
-        System.out.println(token);
-        return "done";
+        return ResponseEntity.ok().build();
     }
 
 }

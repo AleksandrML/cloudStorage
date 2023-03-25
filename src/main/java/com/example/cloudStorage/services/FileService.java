@@ -1,6 +1,6 @@
 package com.example.cloudStorage.services;
 
-import com.example.cloudStorage.exceptions.FilenameAlreadyExists;
+import com.example.cloudStorage.exceptions.FilenameError;
 import com.example.cloudStorage.models.FileEntity;
 import com.example.cloudStorage.models.FileEntityShorten;
 import com.example.cloudStorage.models.FileSending;
@@ -25,8 +25,8 @@ public class FileService {
     public void saveFile(String token, FileSending fileSending) throws IOException {
         String userName = UserService.getUserName(token);
         if (fileRepository.findByFilenameAndUserName(fileSending.getFilename(), userName).isPresent()) {
-            throw new FilenameAlreadyExists(
-                    ("please delete first the existed file with the name %s before loading your " +
+            throw new FilenameError(
+                    ("please delete firstly the existed file with the name %s before loading your " +
                             "new file with the same name").formatted(fileSending.getFilename()));
         }
         FileEntity fileEntity = new FileEntity();

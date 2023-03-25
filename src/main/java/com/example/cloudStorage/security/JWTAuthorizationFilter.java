@@ -1,5 +1,6 @@
 package com.example.cloudStorage.security;
 
+import com.example.cloudStorage.exceptions.BadCredentials;
 import com.example.cloudStorage.repositories.BlackListedTokensRepository;
 import com.example.cloudStorage.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,8 +34,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         if (blackListedTokensRepository.getBlacklistedHeaderTokens().contains(header)) {
-            chain.doFilter(request, response);
-            return;
+            throw new BadCredentials("your token is blacklisted as being logout");
         }
 
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
