@@ -2,13 +2,17 @@ package com.example.cloudStorage.services;
 
 import com.example.cloudStorage.exceptions.FilenameAlreadyExists;
 import com.example.cloudStorage.models.FileEntity;
+import com.example.cloudStorage.models.FileEntityShorten;
 import com.example.cloudStorage.models.FileSending;
 import com.example.cloudStorage.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +54,14 @@ public class FileService {
     public void updateFilename(String token, String filenameOld, String filenameNew) {
         String userName = UserService.getUserName(token);
         fileRepository.updateFilename(filenameNew, userName, filenameOld);
+    }
+
+    @Transactional
+    public List<FileEntityShorten> getFileList(String token, int limit) {
+        String userName = UserService.getUserName(token);
+        Pageable topN = PageRequest.of(0, limit);
+        return fileRepository.findByUserNameOrderByFilename(userName, topN)
+                .stream().map(it -> new FileEntityShorten(it.getFilename(), it.getSize())).toList();
     }
 
 }

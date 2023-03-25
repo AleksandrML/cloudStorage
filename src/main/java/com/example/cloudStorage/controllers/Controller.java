@@ -1,9 +1,6 @@
 package com.example.cloudStorage.controllers;
 
-import com.example.cloudStorage.models.FileEntity;
-import com.example.cloudStorage.models.FileNewName2;
-import com.example.cloudStorage.models.FileSending;
-import com.example.cloudStorage.models.FileNewName;
+import com.example.cloudStorage.models.*;
 import com.example.cloudStorage.services.FileService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -60,6 +58,12 @@ public class Controller {
                            @RequestParam("filename") String filenameOld, @RequestBody FileNewName fileSending) {
         fileService.updateFilename(token, filenameOld, fileSending.getName());
         return "done";
+    }
+
+    @GetMapping(path = "/list")
+    public List<FileEntityShorten> getFileList(@RequestHeader("auth-token") String token,
+                                                @RequestParam("limit") int limit) {
+        return fileService.getFileList(token, limit);
     }
 
 
