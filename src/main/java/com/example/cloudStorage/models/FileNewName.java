@@ -1,15 +1,15 @@
 package com.example.cloudStorage.models;
 
 public class FileNewName {
-    private String name;
+    private String filename;
 
 
-    public String getName() {
-        return name;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
 }

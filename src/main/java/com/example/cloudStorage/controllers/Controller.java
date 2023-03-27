@@ -53,8 +53,8 @@ public class Controller {
 
     @PutMapping(path = "/file")
     public ResponseEntity updateFilename(@RequestHeader("auth-token") String token,
-                           @RequestParam("filename") String filenameOld, @RequestBody FileNewName fileSending) {
-        fileService.updateFilename(token, filenameOld, fileSending.getName());
+                           @RequestParam("filename") String filenameOld, @RequestBody FileNewName fileNewName) {
+        fileService.updateFilename(token, filenameOld, fileNewName.getFilename());
         return ResponseEntity.ok().build();
     }
 
