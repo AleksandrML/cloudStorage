@@ -1,5 +1,6 @@
 package com.example.cloudStorage.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ProjectUser implements Serializable {
     @Id
+    @JsonProperty("login")
     private String username;
 
     private String password;

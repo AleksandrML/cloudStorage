@@ -5,9 +5,9 @@ public class FileEntityShorten {
 
     private String filename;
 
-    private Long size;
+    private int size;
 
-    public FileEntityShorten(String filename, Long size) {
+    public FileEntityShorten(String filename, int size) {
         this.filename = filename;
         this.size = size;
     }
@@ -21,11 +21,11 @@ public class FileEntityShorten {
         this.filename = filename;
     }
 
-    public Long getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(int size) {
         this.size = size;
     }
 

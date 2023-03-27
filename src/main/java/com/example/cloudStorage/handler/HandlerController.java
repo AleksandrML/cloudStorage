@@ -25,45 +25,4 @@ public class HandlerController {
         return new ResponseEntity<>(new ErrorResponse(exception.getMessage(), 0), HttpStatus.UNAUTHORIZED);
     }
 
-//    @ExceptionHandler({TokenExpiredException.class})
-//    public ResponseEntity<ErrorResponse> tokenExpiredError(RuntimeException exception) {
-//        return new ResponseEntity<>(new ErrorResponse(exception.getMessage(), 0), HttpStatus.UNAUTHORIZED);
-//    }
-
-//    @ExceptionHandler({UsernameNotFoundException.class})
-//    public ResponseEntity<ErrorResponse> userNotFoundError(UsernameNotFoundException exception) {
-//        return new ResponseEntity<>(new ErrorResponse(exception.getMessage(), 0), HttpStatus.BAD_REQUEST);
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //    @ExceptionHandler({HttpClientErrorException.Forbidden.class})
-//    public ResponseEntity<BadCredentials> customForbiddenError(RuntimeException exception) {
-//        return new ResponseEntity<>(new BadCredentials(exception.getMessage()), HttpStatus.BAD_REQUEST);
-//    }
-
-
-
-//    @ExceptionHandler({InternalAuthenticationServiceException.class})
-//    public ResponseEntity<BadCredentials> internalAuthError(InternalAuthenticationServiceException exception) {
-//        return new ResponseEntity<>(new BadCredentials(exception.getMessage()), HttpStatus.BAD_REQUEST);
-//    }
-
-
-
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<ErrorCustomResponse> serverError(RuntimeException exception) {
-//        return new ResponseEntity<>(new ErrorCustomResponse(exception.getMessage(), 1), HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-
 }

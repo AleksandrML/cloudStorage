@@ -1,4 +1,4 @@
-package com.example.cloudStorage.security;
+package com.example.cloudStorage.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
-class WebConfig implements WebMvcConfigurer {
+class WebConfigurerCustomForCors implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

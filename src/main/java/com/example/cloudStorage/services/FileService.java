@@ -61,7 +61,7 @@ public class FileService {
         String userName = UserService.getUserName(token);
         Pageable topN = PageRequest.of(0, limit);
         return fileRepository.findByUserNameOrderByFilename(userName, topN)
-                .stream().map(it -> new FileEntityShorten(it.getFilename(), it.getSize())).toList();
+                .stream().map(it -> new FileEntityShorten(it.getFilename(), it.getSize().intValue())).toList();
     }
 
 }
