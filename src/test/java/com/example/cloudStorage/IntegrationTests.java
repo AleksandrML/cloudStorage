@@ -28,8 +28,8 @@ class IntegrationTests {
 	static String DB_USERNAME = System.getenv("DB_USERNAME");
 	static String DB_PASSWORD = System.getenv("DB_PASSWORD");
 	static String SECRET = System.getenv("SECRET_KEY");
-    static String userTest = "USER_TESTttyyffddfff1";
-    static String passwordTest = "PASSWORD_TESTttyyfffddfff1";
+    static String userTest = "USER_TEST";
+    static String passwordTest = "PASSWORD_TEST";
 
 	static Map<String, String> envMap = Map.of(
 			"DB_URL", DB_URL,
@@ -44,7 +44,6 @@ class IntegrationTests {
 
 	@BeforeAll
 	public static void setUp() {
-		System.out.println(SECRET);
 		container.start();
         // create test user
 		// given:
