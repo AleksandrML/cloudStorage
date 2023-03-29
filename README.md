@@ -1,3 +1,18 @@
 cloudStorage project
 
-configured to work with postgresql (implementation 'org.postgresql:postgresql:42.2.11')
+Разработан для обеспечения функционала облачного хранилища данных, бэк-енд часть. 
+Проект включает авторизацию, загрузку файлов, скачивание файлов,
+модификацию файлов, вывод информации о файлах пользователя. В общем случае апи реализован на основе: 
+https://github.com/netology-code/jd-homeworks/blob/master/diploma/CloudServiceSpecification.yaml,
+при этом, может быть использован совместно с фронт-энд частью отсюда:
+https://github.com/netology-code/jd-homeworks/tree/master/diploma/netology-diplom-frontend.
+В дополнение к базовому апи добавлен сервисный эндпойнт "/api/user" для регистрации новых пользователей и внесения
+их credentials в базу данных в зашифрованном виде. Данное решение может быть как расширено дополнением прав 
+пользователей (чтобы новый юзер всегда имел дефолтную наинизшую роль, которую можно расширить только из другого сервиса), 
+так и просто отключено.
+
+Сконфигурирован для работы с postgresql (implementation 'org.postgresql:postgresql:42.2.11').
+Для локальных стартов приложения или тестов, деплоя и последующего запуска контейнера приложения требуется
+конфигурировать следующие переменные сред (в CI/CD, в системе или в настройках локальных раннеров):
+DB_URL, DB_USERNAME, DB_PASSWORD, SECRET_KEY. Например,
+docker run ... --env DB_URL=something --env DB_USERNAME=something ..
