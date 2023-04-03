@@ -8,6 +8,7 @@ import com.example.cloudStorage.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,8 @@ public class FileService {
     private final FileRepository fileRepository;
 
     @Transactional
-    public void saveFile(String token, FileSending fileSending) throws IOException {
-        String userName = UserService.getUserName(token);
+    public void saveFile(FileSending fileSending) throws IOException {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if (fileRepository.findByFilenameAndUserName(fileSending.getFilename(), userName).isPresent()) {
             throw new FilenameError(
                     ("please delete firstly the existed file with the name %s before loading your " +
@@ -39,26 +40,26 @@ public class FileService {
     }
 
     @Transactional
-    public Optional<FileEntity> getFile(String token, String filename) {
-        String userName = UserService.getUserName(token);
+    public Optional<FileEntity> getFile(String filename) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         return fileRepository.findByFilenameAndUserName(filename, userName);
     }
 
     @Transactional
-    public Long deleteFile(String token, String filename) {
-        String userName = UserService.getUserName(token);
+    public Long deleteFile(String filename) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         return fileRepository.deleteByUserNameAndFilename(userName, filename);
     }
 
     @Transactional
-    public void updateFilename(String token, String filenameOld, String filenameNew) {
-        String userName = UserService.getUserName(token);
+    public void updateFilename(String filenameOld, String filenameNew) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         fileRepository.updateFilename(filenameNew, userName, filenameOld);
     }
 
     @Transactional
-    public List<FileEntityShorten> getFileList(String token, int limit) {
-        String userName = UserService.getUserName(token);
+    public List<FileEntityShorten> getFileList(int limit) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         Pageable topN = PageRequest.of(0, limit);
         return fileRepository.findByUserNameOrderByFilename(userName, topN)
                 .stream().map(it -> new FileEntityShorten(it.getFilename(), it.getSize().intValue())).toList();

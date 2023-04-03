@@ -17,13 +17,13 @@ public class UserController {
     private final BlackListedTokensRepository blackListedTokensRepository;
 
     @PostMapping(SecurityConstants.SIGN_UP_URL)
-    public ResponseEntity createUser (@RequestBody UserCreateRequest userCreateRequest) {
+    public ResponseEntity<Void> createUser (@RequestBody UserCreateRequest userCreateRequest) {
         userService.createUser(userCreateRequest);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/logout")
-    public ResponseEntity uploadFileQuery(@RequestHeader("auth-token") String token) {
+    public ResponseEntity<Void> uploadFileQuery(@RequestHeader("auth-token") String token) {
         blackListedTokensRepository.addBlacklistedHeaderToken(token);
         return ResponseEntity.ok().build();
     }

@@ -14,24 +14,23 @@ import java.util.Optional;
 
 
 @RestController
-public class Controller {
+public class FileController {
 
     private FileService fileService;
 
-    public Controller(FileService fileService) {
+    public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 
     @PostMapping(path = "/file", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity uploadFile(@RequestHeader("auth-token") String token, @ModelAttribute FileSending fileSending) throws IOException {
-        fileService.saveFile(token, fileSending);
+    public ResponseEntity<Void> uploadFile(@ModelAttribute FileSending fileSending) throws IOException {
+        fileService.saveFile(fileSending);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/file")
-    public ResponseEntity<byte[]> downloadFile(@RequestHeader("auth-token") String token,
-                                                 @RequestParam("filename") String filename) {
-        Optional<FileEntity> fileEntityOptional = fileService.getFile(token, filename);
+    public ResponseEntity<byte[]> downloadFile(@RequestParam("filename") String filename) {
+        Optional<FileEntity> fileEntityOptional = fileService.getFile(filename);
         if (fileEntityOptional.isEmpty()) {
             throw new FilenameError("the file %s does not exist".formatted(filename));
         }
@@ -43,25 +42,22 @@ public class Controller {
     }
 
     @DeleteMapping(path = "/file")
-    public ResponseEntity deleteFile(@RequestHeader("auth-token") String token,
-                             @RequestParam("filename") String filename) {
-        if (fileService.deleteFile(token, filename) > 0) {
+    public ResponseEntity<Void> deleteFile(@RequestParam("filename") String filename) {
+        if (fileService.deleteFile(filename) > 0) {
             return ResponseEntity.ok().build();
         }
         throw new FilenameError("the file %s does not exist".formatted(filename));
     }
 
     @PutMapping(path = "/file")
-    public ResponseEntity updateFilename(@RequestHeader("auth-token") String token,
-                           @RequestParam("filename") String filenameOld, @RequestBody FileNewName fileNewName) {
-        fileService.updateFilename(token, filenameOld, fileNewName.getFilename());
+    public ResponseEntity<Void> updateFilename(@RequestParam("filename") String filenameOld, @RequestBody FileNewName fileNewName) {
+        fileService.updateFilename(filenameOld, fileNewName.getFilename());
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/list")
-    public List<FileEntityShorten> getFileList(@RequestHeader("auth-token") String token,
-                                                @RequestParam("limit") int limit) {
-        return fileService.getFileList(token, limit);
+    public List<FileEntityShorten> getFileList(@RequestParam("limit") int limit) {
+        return fileService.getFileList(limit);
     }
 
 }
